@@ -8,7 +8,9 @@
 #define str string
 #define ull unsigned long long
 
-ll a[1000010], q, c[1000010], b[1000010];
+const int N = 1000010;
+
+ll q;
 int x, y, n, k, kk;
 
 void swap(ll *a, ll *b)
@@ -26,13 +28,13 @@ ll min(ll a, ll b)
     else return a;
 }
 
-void nind(int i)
+void nind(int i, int *b, int *c)
 {
     b[c[i]] = i;
     return;
 }
 
-void sift_down(int i)
+void sift_down(int i, int *a, int *b, int *c)
 {
     int l, r;
     while(i <= k)
@@ -48,16 +50,16 @@ void sift_down(int i)
             {
                 swap(&a[i], &a[l]);
                 swap(&c[i], &c[l]);
-                nind(i);
-                nind(l);
+                nind(i, b, c);
+                nind(l, b, c);
                 i = l;
             }
             else
             {
                 swap(&a[i], &a[r]);
                 swap(&c[i], &c[r]);
-                nind(i);
-                nind(r);
+                nind(i, b, c);
+                nind(r, b, c);
                 i = r;
             }
         }
@@ -66,48 +68,51 @@ void sift_down(int i)
     return ;
 }
 
-void sift_up(int i)
+void sift_up(int i, int *a, int *b, int *c)
 {
     while(i > 1 && a[i] < a[i / 2])
     {
         swap(&a[i], &a[i / 2]);
         swap(&c[i], &c[i / 2]);
-        nind(i);
-        nind(i / 2);
+        nind(i, b, c);
+        nind(i / 2, b, c);
         i = i / 2;
     }
     return ;
 }
 
-void getmin()
+void getmin(int *a)
 {
     printf("%lld\n", a[1]);
 }
 
-void extract_min()
+void extract_min(int *a, int *b, int *c)
 {
     swap(&a[1], &a[k]);
     swap(&c[1], &c[k--]);
-    nind(1);
-    nind(k + 1);
-    sift_down(1);
+    nind(1, b, c);
+    nind(k + 1, b, c);
+    sift_down(1, a, b, c);
 }
 
-void decreasekey(int x, int y)
+void decreasekey(int x, int y, int *a, int *b, int *c)
 {
 //    printf("\n");
     a[b[x]] -= y;
-    sift_up(b[x]);
+    sift_up(b[x], a, b, c);
 }
 
 int main()
 {
     int z = scanf("%d", &n);
     z /= z;
+    int *a = malloc(n * sizeof(int));
+    int *b = malloc(n * sizeof(int));
+    int *c = malloc(n * sizeof(int));
     for(int i = 1; i <= n; i++)
     {
         char s[30];
-        z = scanf("%s", s);
+        z = scanf("%4s", s);
         z /= z;
         if(s[0] == 'i')
         {
@@ -116,23 +121,23 @@ int main()
             z /= z;
             a[++k] = x;
             c[k] = i;
-            nind(k);
-            sift_up(k);
+            nind(k, b, c);
+            sift_up(k, a, b, c);
         }
         if(s[0] == 'g')
         {
-            getmin();
+            getmin(a);
         }
         if(s[0] == 'e')
         {
-            extract_min();
+            extract_min(a, b, c);
         }
         if(s[0] == 'd')
         {
             int x, y;
             z = scanf("%d%d", &x, &y);
             z /= z;
-            decreasekey(x, y);
+            decreasekey(x, y, a, b, c);
         }
     }
     return 0;
