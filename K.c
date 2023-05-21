@@ -34,6 +34,8 @@ int main()
 {
     int x = scanf("%d", &n);
     n *= x/x;
+    int *a = malloc(n * sizeof(int));
+    int *coa = malloc(n * sizeof(int));
     for(int i = 1; i <= n; i++)
     {
         x = scanf("%d", &a[i]);
