@@ -93,7 +93,7 @@ int main()
     while(1 > 0)
     {
         char s[10];
-        int x = scanf("%s", s);
+        int x = scanf("%4s", s);
         x /= x;
         if(s[0] == 'p' && s[1] == 'u')
         {
