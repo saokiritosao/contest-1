@@ -14,7 +14,6 @@ typedef struct Stack
     int last;
 } Stack;
 
-int pref[1000010], a[1000010];
 int mn = 1e9, x, n, k, kk, y, q;
 
 Stack* stack_ctr(int size, int element_size)
@@ -86,7 +85,7 @@ void clear(Stack* st)
     return ;
 }
 
-void mini(Stack *st)
+void mini(Stack *st, int *pref)
 {
     if(st->last == 0)
     {
@@ -104,6 +103,8 @@ int main()
 {
     int z = scanf("%d", &n);
     z /= z;
+    int *pref = malloc(n * sizeof(int));
+    int *a = malloc(n * sizeof(int));
     Stack *st = stack_ctr(200001, sizeof(int));
     for(int i = 1; i <= n; i++)
     {
@@ -171,7 +172,7 @@ int main()
         }
         if(s[0] == 'm')
         {
-            mini(st);
+            mini(st, pref);
         }
     }
     return 0;
